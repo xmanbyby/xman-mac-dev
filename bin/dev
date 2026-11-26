@@ -1,0 +1,21 @@
+#!/bin/sh
+# DevEnvironment 统一命令行入口（支持通过符号链接调用）
+set -e
+SCRIPT="$0"
+while [ -L "$SCRIPT" ]; do
+  TARGET="$(readlink "$SCRIPT")"
+  case "$TARGET" in
+    /*) SCRIPT="$TARGET" ;;
+    *) SCRIPT="$(dirname "$SCRIPT")/$TARGET" ;;
+  esac
+done
+DEV_HOME="${DEV_HOME:-$(cd "$(dirname "$SCRIPT")/.." && pwd)}"
+export DEV_HOME
+PYTHON="$DEV_HOME/manager/.venv/bin/python"
+if [ ! -x "$PYTHON" ]; then
+  echo "未找到 Python 虚拟环境: $PYTHON" >&2
+  echo "请在 $DEV_HOME/manager 下执行:" >&2
+  echo "  python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt" >&2
+  exit 1
+fi
+exec "$PYTHON" "$DEV_HOME/manager/main.py" "$@"

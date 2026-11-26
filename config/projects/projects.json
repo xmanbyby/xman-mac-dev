@@ -1,0 +1,15 @@
+{
+  "projects": [
+    {
+      "name": "erp",
+      "path": "/Users/xman/Projects/wwwroot/erp.cc",
+      "type": "laravel",
+      "domain": "erp.cc",
+      "php": "8.3",
+      "document_root": "public",
+      "mysql": true,
+      "redis": true,
+      "enabled": true
+    }
+  ]
+}
